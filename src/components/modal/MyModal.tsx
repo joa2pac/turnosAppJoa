@@ -25,7 +25,7 @@ export const MyModal = (props: MyModalProps) => {
       className="fixed inset-0 bg-black bg-opacity-25 backdrop-blur-sm flex items-center justify-center"
     >
       <div className="relative w-full max-w-md max-h-full">
-        <div className="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div className=" p-5 relative bg-white rounded-lg shadow dark:bg-gray-700">
           <svg
             aria-hidden="true"
             className="mx-auto mb-4 text-gray-400 w-14 h-14 dark:text-gray-200"

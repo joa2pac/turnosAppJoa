@@ -133,11 +133,13 @@ export const TablaReserva = () => {
                 type="button"
                 className={`text-white ${
                   reserva.reservados === reserva.limiteReserva
-                    ? "bg-gray-500"
+                    ? "bg-gray-500 hover:bg-gray-800"
                     : "bg-blue-700 hover:bg-blue-800"
                 } ${
-                  isReservado(reserva) ? "bg-green-500" : "bg-blue-700 hover:bg-blue-800"
-                }  focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
+                  isReservado(reserva)
+                    ? "bg-green-500 hover:bg-green-800"
+                    : "bg-blue-700 hover:bg-blue-800"
+                }   hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800`}
               >
                 Reservá
               </button>
