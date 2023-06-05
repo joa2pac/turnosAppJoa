@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useForm } from "../../hooks/Form";
+import { useForm } from "../../Hooks/useForm";
 
 export const Form = (): React.ReactElement => {
   const { formState, onInputChange, onResetForm } = useForm({ email: "", password: "" });

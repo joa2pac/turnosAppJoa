@@ -1,5 +1,4 @@
 import { useState } from "react";
-import "tailwindcss/tailwind.css";
 
 export const Counter = () => {
   const [counter, setCounter] = useState(0);
