@@ -1,14 +1,15 @@
 import Layout from "@/Core/Components/layout/Layout";
-import { Home } from "@/Presentation/Home/Home";
+
+import { Perfil } from "@/Presentation/Perfil/Perfil";
 
 import type { NextPage } from "next";
 
-const HomePage: NextPage = () => {
+const PerfilPage: NextPage = () => {
   return (
     <Layout title="TurnosApp">
-      <Home />
+      <Perfil />
     </Layout>
   );
 };
 
-export default HomePage;
+export default PerfilPage;
