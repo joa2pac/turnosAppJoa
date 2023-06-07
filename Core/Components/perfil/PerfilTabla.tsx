@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Modal } from "./Modal";
 import { Reserva } from "../table/TablaReserva";
 
-export type ReservaEstadoType = 'confirmado' | 'cancelado'
+export type ReservaEstadoType = "confirmado" | "cancelado";
 
 export interface UsuarioReserva extends Reserva {
   estado: ReservaEstadoType;
@@ -12,12 +12,14 @@ export interface Usuario {
   id: number;
   email: string;
   reservas: UsuarioReserva[];
+  creditos?: number;
 }
 
 export const mockUsuario: Usuario = {
   id: 1,
   email: "Joaquin_19@gmail.com",
   reservas: [],
+  creditos: 30,
 };
 
 export const PerfilTabla = () => {
@@ -50,8 +52,8 @@ export const PerfilTabla = () => {
 
     setReservas(updatedUsuarioReservas);
     setUsuario(updatedUsuario);
-    
-    const reservasStoredData = localStorage.getItem('Reservas');
+
+    const reservasStoredData = localStorage.getItem("Reservas");
 
     if (reservasStoredData) {
       const reservasParsed = JSON.parse(reservasStoredData) as Reserva[];
@@ -59,7 +61,7 @@ export const PerfilTabla = () => {
       if (reservasParsed.length) {
         const updatedReservas = reservasParsed.map((reserva) => {
           if (reserva.id === selectedReserva.id) {
-            return { ...reserva, reservados: reserva.reservados - 1};
+            return { ...reserva, reservados: reserva.reservados - 1 };
           }
           return reserva;
         });
@@ -70,8 +72,6 @@ export const PerfilTabla = () => {
       localStorage.setItem("Usuario", JSON.stringify(updatedUsuario));
     }
 
-
-
     setShowModal(false);
   };
 
@@ -79,7 +79,7 @@ export const PerfilTabla = () => {
     const usuario = localStorage.getItem("Usuario");
     if (usuario) {
       const usuarioStoredData = JSON.parse(usuario) as Usuario;
-      const usuarioReservas = usuarioStoredData?.reservas
+      const usuarioReservas = usuarioStoredData?.reservas;
       if (usuarioReservas.length) {
         setReservas(usuarioReservas);
         setUsuario((prevUsuario) => ({
@@ -87,7 +87,6 @@ export const PerfilTabla = () => {
           reservas: usuarioReservas,
         }));
       }
-
     }
   }, []);
 
