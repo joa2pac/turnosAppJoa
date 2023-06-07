@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Modal } from "./Modal";
+import { Reserva } from "../table/TablaReserva";
 
-export interface Reserva {
-  id: number;
-  fecha: string;
-  entrenamiento: string;
-  estado: string;
+export type ReservaEstadoType = 'confirmado' | 'cancelado'
+
+export interface UsuarioReserva extends Reserva {
+  estado: ReservaEstadoType;
 }
 
 export interface Usuario {
   id: number;
   email: string;
-  reservas: Reserva[];
+  reservas: UsuarioReserva[];
 }
 
 export const mockUsuario: Usuario = {
@@ -21,12 +21,12 @@ export const mockUsuario: Usuario = {
 };
 
 export const PerfilTabla = () => {
-  const [reservas, setReservas] = useState<Reserva[]>([]);
+  const [reservas, setReservas] = useState<UsuarioReserva[]>([]);
   const [usuario, setUsuario] = useState<Usuario>(mockUsuario);
-  const [selectedReserva, setSelectedReserva] = useState<Reserva>({} as Reserva);
+  const [selectedReserva, setSelectedReserva] = useState<UsuarioReserva>({} as UsuarioReserva);
   const [showModal, setShowModal] = useState(false);
 
-  const selectReserva = (reserva: Reserva) => {
+  const selectReserva = (reserva: UsuarioReserva) => {
     setSelectedReserva(reserva);
     setShowModal(true);
   };
@@ -36,7 +36,7 @@ export const PerfilTabla = () => {
   };
 
   const cancelarReserva = () => {
-    const updatedReservas = reservas.map((reserva) => {
+    const updatedUsuarioReservas: UsuarioReserva[] = reservas.map((reserva) => {
       if (reserva.id === selectedReserva.id) {
         return { ...reserva, estado: "cancelado" };
       }
@@ -45,27 +45,49 @@ export const PerfilTabla = () => {
 
     const updatedUsuario = {
       ...usuario,
-      reservas: updatedReservas,
+      reservas: updatedUsuarioReservas,
     };
 
-    setReservas(updatedReservas);
+    setReservas(updatedUsuarioReservas);
     setUsuario(updatedUsuario);
+    
+    const reservasStoredData = localStorage.getItem('Reservas');
 
-    localStorage.setItem("Reservas", JSON.stringify(updatedReservas));
-    localStorage.setItem("Usuario", JSON.stringify(updatedUsuario));
+    if (reservasStoredData) {
+      const reservasParsed = JSON.parse(reservasStoredData) as Reserva[];
+
+      if (reservasParsed.length) {
+        const updatedReservas = reservasParsed.map((reserva) => {
+          if (reserva.id === selectedReserva.id) {
+            return { ...reserva, reservados: reserva.reservados - 1};
+          }
+          return reserva;
+        });
+
+        localStorage.setItem("Reservas", JSON.stringify(updatedReservas));
+      }
+
+      localStorage.setItem("Usuario", JSON.stringify(updatedUsuario));
+    }
+
+
 
     setShowModal(false);
   };
 
   useEffect(() => {
-    const dataReservas = localStorage.getItem("Reservas");
-    if (dataReservas) {
-      const storedReservas = JSON.parse(dataReservas);
-      setReservas(storedReservas);
-      setUsuario((prevUsuario) => ({
-        ...prevUsuario,
-        reservas: storedReservas,
-      }));
+    const usuario = localStorage.getItem("Usuario");
+    if (usuario) {
+      const usuarioStoredData = JSON.parse(usuario) as Usuario;
+      const usuarioReservas = usuarioStoredData?.reservas
+      if (usuarioReservas.length) {
+        setReservas(usuarioReservas);
+        setUsuario((prevUsuario) => ({
+          ...prevUsuario,
+          reservas: usuarioReservas,
+        }));
+      }
+
     }
   }, []);
 

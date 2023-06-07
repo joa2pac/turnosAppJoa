@@ -2,6 +2,7 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { MyModal } from "../modal/MyModal";
+import { UsuarioReserva } from "../perfil/PerfilTabla";
 
 export interface Reserva {
   id: number;
@@ -14,7 +15,7 @@ export interface Reserva {
 export interface Usuario {
   id: number;
   email: string;
-  reservas: Reserva[];
+  reservas: UsuarioReserva[];
 }
 
 export const mockUsuario: Usuario = {
@@ -84,7 +85,7 @@ export const TablaReserva = () => {
   };
 
   const isReservado = (reserva: Reserva): boolean => {
-    return usuario.reservas.some((r) => r.id === reserva.id);
+    return usuario.reservas.some((r) => r.id === reserva.id && r.estado === 'confirmado');
   };
 
   useEffect(() => {
@@ -103,9 +104,15 @@ export const TablaReserva = () => {
   }, []);
 
   const handleUsuarioReserva = (reserva: Reserva) => {
+
+    const usuarioReserva: UsuarioReserva = {
+      ...reserva,
+      estado: "confirmado"
+    }
+
     const updatedUsuario = {
       ...usuario,
-      reservas: [...usuario.reservas, reserva],
+      reservas: [...usuario.reservas, usuarioReserva],
     };
     setUsuario(updatedUsuario);
     localStorage.setItem("Usuario", JSON.stringify(updatedUsuario));
