@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Reserva } from "../table/TablaReserva";
 import { Usuario } from "../perfil/PerfilTabla";
 
 export const MisPagosTable = () => {
@@ -9,7 +8,7 @@ export const MisPagosTable = () => {
     const usuario = localStorage.getItem("Usuario");
     if (usuario) {
       const usuarioStoredData = JSON.parse(usuario) as Usuario;
-      const usuarioReservas = usuarioStoredData?.reservas;
+      const usuarioReservas = usuarioStoredData?.reservas.filter(reserva => reserva.estado === 'confirmado');
       const totalReservados = usuarioReservas.length;
       setCreditosDisponibles(30 - totalReservados);
     }
